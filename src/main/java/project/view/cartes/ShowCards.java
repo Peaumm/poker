@@ -11,7 +11,7 @@ public class ShowCards extends JPanel {
         JFrame frame = new JFrame();
 
         JPanel cartePanel = new JPanel();
-        cartePanel.setLayout(new BoxLayout(cartePanel, BoxLayout.Y_AXIS));
+        cartePanel.setLayout(new BoxLayout(cartePanel, BoxLayout.X_AXIS));
         List<Carte> listCartes = new ArrayList<>();
 
 //        Carte carte = new Carte();
