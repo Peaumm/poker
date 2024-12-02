@@ -1,3 +1,5 @@
+package project.model;
+
 import javax.swing.*;
 import java.awt.*;
 
