@@ -10,17 +10,18 @@ public class Player {
     private List<Integer> cards;
     private Integer money;
     private Integer betAmount;
+    private Integer score;
 
     public Player() {
     }
 
-    public Player(Integer id, String name, Integer cards, Integer money, Integer betAmount) {
+    public Player(Integer id, String name, Integer cards, Integer money, Integer betAmount, Integer score) {
         this.id = id;
         this.name = name;
         this.cards = new ArrayList<>();
         this.money = money;
         this.betAmount = 0;
-
+        this.score = score;
     }
 
     public Player(String name, Integer cards, Integer money) {
@@ -56,14 +57,6 @@ public class Player {
         return cards;
     }
 
-    public Integer getBetAmount() {
-        return betAmount;
-    }
-
-    public void setBetAmount(Integer betAmount) {
-        this.betAmount = betAmount;
-    }
-
     public void setCards(List<Integer> cards) {
         this.cards = cards;
     }
@@ -75,5 +68,21 @@ public class Player {
     public void setMoney(Integer money) {
         this.money = money;
     }
+
+    public Integer getBetAmount() {
+      return betAmount;
+  }
+
+  public void setBetAmount(Integer betAmount) {
+      this.betAmount = betAmount;
+  }
+
+  public Integer getScore() {
+    return money;
+  }
+
+  public void setScore(Integer score) {
+    this.score = score;
+}
 
 }
