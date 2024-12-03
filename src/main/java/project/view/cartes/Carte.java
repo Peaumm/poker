@@ -1,5 +1,6 @@
 package project.view.cartes;
 
+import lombok.Getter;
 import project.tool.Functions;
 
 import javax.imageio.ImageIO;
@@ -13,8 +14,10 @@ import java.util.List;
 
 public class Carte extends JPanel {
     private BufferedImage image;
-    private BufferedImage carte;
-    public List<Integer> listPosition = new ArrayList<>();
+    private final BufferedImage carte;
+
+    @Getter private final int ligne = Functions.alea(0,6);
+    @Getter private final int colonne = Functions.alea(0, 7);
 
     public Carte() {
         try {
@@ -26,10 +29,6 @@ public class Carte extends JPanel {
 
             int largeurCarte = 95;
             int hauteurCarte = 145;
-            int ligne = Functions.alea(0,6);
-            int colonne = Functions.alea(0, 7);
-
-            positionCarte(ligne, colonne);
 
             carte = image.getSubimage(
                 colonne * (largeurCarte + 34) + 35,
@@ -47,9 +46,5 @@ public class Carte extends JPanel {
         if (carte != null) {
             g.drawImage(carte, 50, 50, null);
         }
-    }
-
-    public void positionCarte(int ligne, int colonne) {
-        listPosition.add((colonne + 1) + (ligne * 8));
     }
 }
