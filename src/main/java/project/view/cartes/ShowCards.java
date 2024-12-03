@@ -14,13 +14,20 @@ public class ShowCards extends JPanel {
         cartePanel.setLayout(new BoxLayout(cartePanel, BoxLayout.X_AXIS));
         List<Carte> listCartes = new ArrayList<>();
 
-//        Carte carte = new Carte();
-//        cartePanel.add(carte);
-
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; listCartes.size() < 5; i++) {
+            boolean exist = false;
             Carte carte = new Carte();
-            listCartes.add(i, carte);
+            for (Carte listCarte : listCartes) {
+                if ((int) listCarte.listPosition.get(0) == (int) carte.listPosition.get(0)) {
+                    exist = true;
+                    break;
+                }
+            }
+            if (!exist) {
+                listCartes.add(carte);
+            }
         }
+
         for (Carte carte : listCartes) {
             cartePanel.add(carte);
         }
