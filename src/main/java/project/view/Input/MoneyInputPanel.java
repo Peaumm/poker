@@ -1,17 +1,18 @@
 package project.view.Input;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import project.tool.Functions;
 
-public class MoneyInputPanel extends JPanel { 
+import javax.swing.*;
+import java.awt.*;
+
+public class MoneyInputPanel extends JPanel {
 
     private JLabel resultLabel;
     private JTextField moneyField;
+    private MoneyInputListener moneyListener;
 
-    public MoneyInputPanel() {
+    public MoneyInputPanel(MoneyInputListener listener) {
+        this.moneyListener = listener;
         setLayout(new FlowLayout());
 
         moneyField = new JTextField(10);
@@ -22,15 +23,17 @@ public class MoneyInputPanel extends JPanel {
         add(validateButton);
 
         resultLabel = new JLabel("Votre somme sera affichée ici.");
-        resultLabel.setHorizontalAlignment(SwingConstants.LEFT);
-        resultLabel.setForeground(Color.BLACK);
         add(resultLabel);
 
-        validateButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Functions.setMoneyFromInput(resultLabel, moneyField);
+        validateButton.addActionListener(e -> {
+            int money = Functions.setMoneyFromInput(resultLabel, moneyField);
+            if (money > 0) {
+                moneyListener.onMoneyDefined(money);
             }
         });
+    }
+
+    public interface MoneyInputListener {
+        void onMoneyDefined(int money);
     }
 }

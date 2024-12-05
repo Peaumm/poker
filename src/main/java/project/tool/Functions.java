@@ -30,11 +30,12 @@ public abstract class Functions {
     return reponse;
   }
 
-  public static void setMoneyFromInput(JLabel resultLabel, JTextField moneyField) {
+  public static int setMoneyFromInput(JLabel resultLabel, JTextField moneyField) {
     String inputText = moneyField.getText();
+    int money = -1;
 
     try {
-        int money = Integer.parseInt(inputText);
+        money = Integer.parseInt(inputText);
         if (money < 0) {
             resultLabel.setText("Erreur : La somme ne peut pas être négative.");
         } else {
@@ -43,6 +44,7 @@ public abstract class Functions {
     } catch (NumberFormatException ex) {
         resultLabel.setText("Erreur : Veuillez entrer un nombre valide.");
     }
-}
 
+    return money;
+}
 }
