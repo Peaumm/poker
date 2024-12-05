@@ -16,11 +16,33 @@ public class ShowCards extends JPanel {
         {49,50,51,52,0,0,0,0},
     };
 
-    public ShowCards () {
-        JFrame frame = new JFrame();
+    JFrame frame;
+    JPanel cartePanel;
+    JPanel carteAdversPanel;
+    JPanel tout;
+    JPanel revealPanel;
 
-        JPanel cartePanel = new JPanel();
+    public ShowCards () {
+        frame = new JFrame();
+        frame.setLayout(new BorderLayout());
+        frame.setTitle("Poker");
+        frame.setSize(1280, 720 );
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        cartePanel = new JPanel();
+        carteAdversPanel = new JPanel();
+        tout = new JPanel();
+
+        tout.setLayout(new BorderLayout());
+
         cartePanel.setLayout(new BoxLayout(cartePanel, BoxLayout.X_AXIS));
+        carteAdversPanel.setLayout(new BoxLayout(carteAdversPanel, BoxLayout.X_AXIS));
+
+        Dimension dimHauteur = new Dimension(Integer.MAX_VALUE, 300);
+//        Dimension dimLargeur = new Dimension(100, Integer.MAX_VALUE);
+        cartePanel.setPreferredSize(dimHauteur);
+        carteAdversPanel.setPreferredSize(dimHauteur);
+
         List<Carte> listCartes = new ArrayList<>();
 
         for (int i = 0; listCartes.size() < 5; i++) {
@@ -30,6 +52,7 @@ public class ShowCards extends JPanel {
             if (tab[carte.getLigne()][carte.getColonne()] == 0) {
                 exist = true;
             } else {
+                carte.setValeur(tab[carte.getLigne()][carte.getColonne()]);
                 positionCarte(carte.getLigne(), carte.getColonne(), tab);
             }
 
@@ -39,17 +62,55 @@ public class ShowCards extends JPanel {
         }
 
         for (Carte carte : listCartes) {
+            System.out.println(carte.getValeur());
             cartePanel.add(carte);
         }
 
+        List<CarteAdverse> listCartesAdverse = new ArrayList<>();
+
+        for (int i = 0; listCartesAdverse.size() < 5; i++) {
+            boolean exist = false;
+            CarteAdverse carteAdverse = new CarteAdverse();
+            if (tab[carteAdverse.getLigne()][carteAdverse.getColonne()] == 0) {
+                exist = true;
+            } else {
+                carteAdverse.setValeur(tab[carteAdverse.getLigne()][carteAdverse.getColonne()]);
+                positionCarte(carteAdverse.getLigne(), carteAdverse.getColonne(), tab);
+            }
+
+            if (!exist) {
+                listCartesAdverse.add(carteAdverse);
+            }
+        }
+
+        for (CarteAdverse carteAdverse : listCartesAdverse) {
+            System.out.println(carteAdverse.getValeur());
+            carteAdversPanel.add(carteAdverse);
+        }
+
+//        JButton button = new JButton("OK");
+//        button.addActionListener(e -> {
+//            tout.remove(carteAdversPanel);
+//            revealPanel = new JPanel();
+//            revealPanel.setPreferredSize(dimHauteur);
+//            revealPanel.setLayout(new BoxLayout(revealPanel, BoxLayout.X_AXIS));
+//
+//            for (CarteAdverse carteAdverse : listCartesAdverse) {
+//                Carte newCarte = new Carte(carteAdverse.getValeur());
+//                System.out.println(carteAdverse.getLigne() + " " + carteAdverse.getColonne());
+//                revealPanel.add(newCarte);
+//            }
+//            tout.add(revealPanel, BorderLayout.NORTH);
+//            frame.revalidate();
+//        });
+
         displayBoard(tab);
 
-        this.add(cartePanel, BorderLayout.WEST);
+        tout.add(cartePanel, BorderLayout.SOUTH);
+        tout.add(carteAdversPanel, BorderLayout.NORTH);
+//        tout.add(button, BorderLayout.CENTER);
 
-        frame.setTitle("Poker");
-        frame.setSize(1280, 720 );
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(cartePanel);
+        frame.add(tout);
         frame.setVisible(true);
 
     }
