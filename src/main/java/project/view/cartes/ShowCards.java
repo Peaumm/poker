@@ -1,5 +1,8 @@
 package project.view.cartes;
 
+import project.view.Input.MiseInputPanel;
+import project.view.Input.MoneyInputPanel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -19,8 +22,12 @@ public class ShowCards extends JPanel {
     JFrame frame;
     JPanel cartePanel;
     JPanel carteAdversPanel;
+    JPanel buttonPanel;
     JPanel tout;
     JPanel revealPanel;
+    MoneyInputPanel money;
+    MiseInputPanel mise;
+    JButton button;
 
     public ShowCards () {
         frame = new JFrame();
@@ -39,7 +46,7 @@ public class ShowCards extends JPanel {
         carteAdversPanel.setLayout(new BoxLayout(carteAdversPanel, BoxLayout.X_AXIS));
 
         Dimension dimHauteur = new Dimension(Integer.MAX_VALUE, 300);
-//        Dimension dimLargeur = new Dimension(100, Integer.MAX_VALUE);
+        Dimension dimLargeur = new Dimension(100, Integer.MAX_VALUE);
         cartePanel.setPreferredSize(dimHauteur);
         carteAdversPanel.setPreferredSize(dimHauteur);
 
@@ -88,27 +95,46 @@ public class ShowCards extends JPanel {
             carteAdversPanel.add(carteAdverse);
         }
 
-//        JButton button = new JButton("OK");
-//        button.addActionListener(e -> {
-//            tout.remove(carteAdversPanel);
-//            revealPanel = new JPanel();
-//            revealPanel.setPreferredSize(dimHauteur);
-//            revealPanel.setLayout(new BoxLayout(revealPanel, BoxLayout.X_AXIS));
-//
-//            for (CarteAdverse carteAdverse : listCartesAdverse) {
-//                Carte newCarte = new Carte(carteAdverse.getValeur());
-//                System.out.println(carteAdverse.getLigne() + " " + carteAdverse.getColonne());
-//                revealPanel.add(newCarte);
-//            }
-//            tout.add(revealPanel, BorderLayout.NORTH);
-//            frame.revalidate();
-//        });
+        button = new JButton("Révéler les cartes adverses");
+        button.setPreferredSize(new Dimension(250, 60));
+        button.addActionListener(e -> {
+            tout.remove(carteAdversPanel);
+            revealPanel = new JPanel();
+            revealPanel.setPreferredSize(dimHauteur);
+            revealPanel.setLayout(new BoxLayout(revealPanel, BoxLayout.X_AXIS));
+
+            for (CarteAdverse carteAdverse : listCartesAdverse) {
+                Carte newCarte = new Carte(carteAdverse.getValeur());
+                System.out.println(carteAdverse.getLigne() + " " + carteAdverse.getColonne());
+                revealPanel.add(newCarte);
+            }
+            tout.add(revealPanel, BorderLayout.NORTH);
+            frame.revalidate();
+        });
+
+        money = new MoneyInputPanel(money1 -> {
+            mise = new MiseInputPanel(money1);
+            mise.setPreferredSize(new Dimension(200, 400));
+
+            tout.remove(buttonPanel);
+            buttonPanel.add(button, BorderLayout.WEST);
+            buttonPanel.add(mise, BorderLayout.EAST);
+            tout.add(cartePanel, BorderLayout.SOUTH);
+            tout.add(carteAdversPanel, BorderLayout.NORTH);
+            tout.add(buttonPanel, BorderLayout.CENTER);
+
+            frame.revalidate();
+        });
+
+        buttonPanel = new JPanel();
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
+        Dimension dimButton = new Dimension(100, 100);
+        buttonPanel.setPreferredSize(dimButton);
+        buttonPanel.add(money);
 
         displayBoard(tab);
 
-        tout.add(cartePanel, BorderLayout.SOUTH);
-        tout.add(carteAdversPanel, BorderLayout.NORTH);
-//        tout.add(button, BorderLayout.CENTER);
+        tout.add(buttonPanel, BorderLayout.CENTER);
 
         frame.add(tout);
         frame.setVisible(true);
@@ -123,7 +149,6 @@ public class ShowCards extends JPanel {
             System.out.println();
         }
     }
-
 
     public void positionCarte(int ligne, int colonne, int[][] tab) {
         tab[ligne][colonne] = 0;
