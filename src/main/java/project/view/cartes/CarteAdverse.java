@@ -1,6 +1,7 @@
 package project.view.cartes;
 
 import lombok.Getter;
+import lombok.Setter;
 import project.tool.Functions;
 
 import javax.imageio.ImageIO;
@@ -16,6 +17,7 @@ public class CarteAdverse extends JPanel {
 
     @Getter private final int ligne = Functions.alea(0,6);
     @Getter private final int colonne = Functions.alea(0, 7);
+    @Getter @Setter private int valeur;
 
     public CarteAdverse() {
         try {
