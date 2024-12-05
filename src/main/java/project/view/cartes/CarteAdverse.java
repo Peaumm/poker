@@ -9,29 +9,31 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 
-public class Carte extends JPanel {
-    private BufferedImage image;
+public class CarteAdverse extends JPanel {
+    private final BufferedImage image;
     private final BufferedImage carte;
+    private final Image scaledImage;
 
     @Getter private final int ligne = Functions.alea(0,6);
     @Getter private final int colonne = Functions.alea(0, 7);
 
-    public Carte() {
+    public CarteAdverse() {
         try {
-            InputStream fichierImage = getClass().getResourceAsStream("/images/cartes.jpg");
+            InputStream fichierImage = getClass().getResourceAsStream("/images/back.jpg");
             if (fichierImage == null) {
                 throw new Exception("Image non trouvé");
             }
             image = ImageIO.read(fichierImage);
 
-            int largeurCarte = 95;
-            int hauteurCarte = 145;
-
             carte = image.getSubimage(
-                colonne * (largeurCarte + 34) + 35,
-                ligne * (hauteurCarte + 35) + 35,
-                largeurCarte, hauteurCarte
+                60,
+                0,
+                283,
+                400
             );
+
+            ImageIcon originalIcon = new ImageIcon(carte);
+            scaledImage = originalIcon.getImage().getScaledInstance(90, 145, Image.SCALE_SMOOTH);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -40,8 +42,8 @@ public class Carte extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        if (carte != null) {
-            g.drawImage(carte, 50, 50, null);
+        if (scaledImage != null) {
+            g.drawImage(scaledImage, 50, 50, null);
         }
     }
 }
