@@ -1,5 +1,10 @@
 package project.view.Input;
 
+import project.view.cartes.Carte;
+import project.view.cartes.CarteAdverse;
+import project.view.cartes.ShowCards;
+
+import java.util.List;
 import java.awt.*;
 import javax.swing.*;
 
@@ -7,8 +12,12 @@ public class MiseInputPanel extends JPanel {
   private JButton btnMiser1, btnMiser3, btnMiser5, btnMiser10, btnMiser50, btnMiser100, btnTapis;
   private JLabel resultLabel;
   private int playerMoney = 0;
+  JButton button;
+  JPanel revealPanel;
+  JButton newGameButton;
 
-  public MiseInputPanel(int initialMoney) {
+
+  public MiseInputPanel(int initialMoney, ShowCards exchange, List<Carte> list, JPanel tout, JPanel carteAdversPanel, List<CarteAdverse> listCartesAdverse, JFrame frame) {
     this.playerMoney = initialMoney;
 
     // Layout principal du panneau
@@ -42,7 +51,35 @@ public class MiseInputPanel extends JPanel {
     resultLabel = new JLabel("Somme disponible : " + playerMoney + " jetons", SwingConstants.CENTER);
     add(resultLabel, BorderLayout.WEST);
 
-    addActionsMise();
+    Dimension dimHauteur = new Dimension(Integer.MAX_VALUE, 300);
+
+    newGameButton = new JButton("Nouveau Jeu ?");
+    newGameButton.setPreferredSize(new Dimension(250, 60));
+    newGameButton.addActionListener(e -> {
+        new ShowCards(playerMoney);
+        frame.dispose();
+    });
+
+    button = new JButton("Révéler les cartes adverses");
+    button.setPreferredSize(new Dimension(250, 60));
+    button.addActionListener(e -> {
+      tout.remove(carteAdversPanel);
+      revealPanel = new JPanel();
+      revealPanel.setPreferredSize(dimHauteur);
+      revealPanel.setLayout(new BoxLayout(revealPanel, BoxLayout.X_AXIS));
+
+      for (CarteAdverse carteAdverse : listCartesAdverse) {
+          Carte newCarte = new Carte(carteAdverse.getValeur());
+          System.out.println(carteAdverse.getLigne() + " " + carteAdverse.getColonne());
+          revealPanel.add(newCarte);
+      }
+      tout.add(revealPanel, BorderLayout.NORTH);
+      buttonsPanel.removeAll();
+      buttonsPanel.add(newGameButton);
+      tout.revalidate();
+    });
+
+    addActionsMise(buttonsPanel, exchange, list, button);
   }
 
   private JButton createButton(String text) {
@@ -51,14 +88,63 @@ public class MiseInputPanel extends JPanel {
     return button;
   }
 
-  private void addActionsMise() {
-    btnMiser1.addActionListener(e -> miser(1));
-    btnMiser3.addActionListener(e -> miser(3));
-    btnMiser5.addActionListener(e -> miser(5));
-    btnMiser10.addActionListener(e -> miser(10));
-    btnMiser50.addActionListener(e -> miser(50));
-    btnMiser100.addActionListener(e -> miser(100));
-    btnTapis.addActionListener(e -> miser(playerMoney));
+  private void addActionsMise(JPanel buttonsPanel, ShowCards exchange, List<Carte> list, JButton button) {
+    btnMiser1.addActionListener(e -> {
+        miser(1);
+        buttonsPanel.removeAll();
+        buttonsPanel.add(button, BorderLayout.EAST);
+        exchange.exchangeCards(list);
+        revalidate();
+        repaint();
+    });
+    btnMiser3.addActionListener(e -> {
+        miser(3);
+        buttonsPanel.removeAll();
+        buttonsPanel.add(button, BorderLayout.EAST);
+        exchange.exchangeCards(list);
+        revalidate();
+        repaint();
+    });
+    btnMiser5.addActionListener(e -> {
+        miser(5);
+        buttonsPanel.removeAll();
+        buttonsPanel.add(button, BorderLayout.EAST);
+        exchange.exchangeCards(list);
+        revalidate();
+        repaint();
+    });
+    btnMiser10.addActionListener(e -> {
+        miser(10);
+        buttonsPanel.removeAll();
+        buttonsPanel.add(button, BorderLayout.EAST);
+        exchange.exchangeCards(list);
+        revalidate();
+        repaint();
+    });
+    btnMiser50.addActionListener(e -> {
+        miser(50);
+        buttonsPanel.removeAll();
+        buttonsPanel.add(button, BorderLayout.EAST);
+        exchange.exchangeCards(list);
+        revalidate();
+        repaint();
+    });
+    btnMiser100.addActionListener(e -> {
+        miser(100);
+        buttonsPanel.removeAll();
+        buttonsPanel.add(button, BorderLayout.EAST);
+        exchange.exchangeCards(list);
+        revalidate();
+        repaint();
+    });
+    btnTapis.addActionListener(e -> {
+        miser(playerMoney);
+        buttonsPanel.removeAll();
+        buttonsPanel.add(button, BorderLayout.EAST);
+        exchange.exchangeCards(list);
+        revalidate();
+        repaint();
+    });
   }
 
   private void miser(int amount) {
