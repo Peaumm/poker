@@ -108,7 +108,7 @@ public class ShowCards extends JPanel {
         }
 
         money = new MoneyInputPanel(money1 -> {
-            mise = new MiseInputPanel(money1, this, listCartes, tout, carteAdversPanel, listCartesAdverse);
+            mise = new MiseInputPanel(money1, this, listCartes, tout, carteAdversPanel, listCartesAdverse, frame);
             mise.setPreferredSize(new Dimension(200, 400));
 
             tout.remove(buttonPanel);
@@ -200,7 +200,7 @@ public class ShowCards extends JPanel {
             carteAdversPanel.add(carteAdverse);
         }
 
-        mise = new MiseInputPanel(restMoney, this, listCartes, tout, carteAdversPanel, listCartesAdverse);
+        mise = new MiseInputPanel(restMoney, this, listCartes, tout, carteAdversPanel, listCartesAdverse, frame);
         mise.setPreferredSize(new Dimension(200, 400));
 
         buttonPanel = new JPanel();

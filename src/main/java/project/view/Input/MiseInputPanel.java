@@ -17,7 +17,7 @@ public class MiseInputPanel extends JPanel {
   JButton newGameButton;
 
 
-  public MiseInputPanel(int initialMoney, ShowCards exchange, List<Carte> list, JPanel tout, JPanel carteAdversPanel, List<CarteAdverse> listCartesAdverse) {
+  public MiseInputPanel(int initialMoney, ShowCards exchange, List<Carte> list, JPanel tout, JPanel carteAdversPanel, List<CarteAdverse> listCartesAdverse, JFrame frame) {
     this.playerMoney = initialMoney;
 
     // Layout principal du panneau
@@ -56,8 +56,8 @@ public class MiseInputPanel extends JPanel {
     newGameButton = new JButton("Nouveau Jeu ?");
     newGameButton.setPreferredSize(new Dimension(250, 60));
     newGameButton.addActionListener(e -> {
-        boolean game = true;
         new ShowCards(playerMoney);
+        frame.dispose();
     });
 
     button = new JButton("Révéler les cartes adverses");
