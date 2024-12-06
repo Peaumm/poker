@@ -1,5 +1,6 @@
 package project.view.cartes;
 
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
@@ -9,17 +10,27 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;  
 import javax.swing.JPanel;
 
+import lombok.Getter;
+import lombok.Setter;
+import project.tool.Functions;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.InputStream;
+
+
 public class Carte extends JPanel {
     private BufferedImage image;
     private final BufferedImage carte;
     private boolean selected = false;  
 
-    private final int ligne;
-    private final int colonne;
 
-    public Carte(int ligne, int colonne) {
-        this.ligne = ligne;
-        this.colonne = colonne;
+    @Getter private int ligne = Functions.alea(0,6);
+    @Getter private int colonne = Functions.alea(0, 7);
+    @Getter @Setter private int valeur;
+
 
         try {
             InputStream fichierImage = getClass().getResourceAsStream("/images/cartes.jpg");
@@ -47,6 +58,30 @@ public class Carte extends JPanel {
                 repaint();  
             }
         });
+    }
+
+    public Carte(int valeur) {
+        try {
+            InputStream fichierImage = getClass().getResourceAsStream("/images/cartes.jpg");
+            if (fichierImage == null) {
+                throw new Exception("Image non trouvé");
+            }
+            image = ImageIO.read(fichierImage);
+
+            ligne = (valeur-1) / 8;
+            colonne = (valeur-1) % 8;
+
+            int largeurCarte = 95;
+            int hauteurCarte = 145;
+
+            carte = image.getSubimage(
+                colonne * (largeurCarte + 34) + 35,
+                ligne * (hauteurCarte + 35) + 35,
+                largeurCarte, hauteurCarte
+            );
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
