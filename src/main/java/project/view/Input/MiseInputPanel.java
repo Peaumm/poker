@@ -40,7 +40,7 @@ public class MiseInputPanel extends JPanel {
 
     // Label d'information en bas
     resultLabel = new JLabel("Somme disponible : " + playerMoney + " jetons", SwingConstants.CENTER);
-    add(resultLabel, BorderLayout.SOUTH);
+    add(resultLabel, BorderLayout.WEST);
 
     addActionsMise();
   }

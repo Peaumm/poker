@@ -9,6 +9,7 @@ public class MoneyInputPanel extends JPanel {
 
     private JLabel resultLabel;
     private JTextField moneyField;
+    private JLabel moneyLabel;
     private MoneyInputListener moneyListener;
 
     public MoneyInputPanel(MoneyInputListener listener) {
@@ -16,7 +17,8 @@ public class MoneyInputPanel extends JPanel {
         setLayout(new FlowLayout());
 
         moneyField = new JTextField(10);
-        add(new JLabel("Entrez votre somme :"));
+        moneyLabel = new JLabel("Entrez votre somme :");
+        add(moneyLabel);
         add(moneyField);
 
         JButton validateButton = new JButton("Valider");
@@ -30,6 +32,10 @@ public class MoneyInputPanel extends JPanel {
             if (money > 0) {
                 moneyListener.onMoneyDefined(money);
             }
+            remove(moneyField);
+            remove(validateButton);
+            remove(resultLabel);
+            remove(moneyLabel);
         });
     }
 
