@@ -1,5 +1,15 @@
 package project.view.cartes;
 
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.InputStream;
+import javax.imageio.ImageIO;  
+import java.awt.image.BufferedImage;  
+import javax.swing.JPanel;
+
 import lombok.Getter;
 import lombok.Setter;
 import project.tool.Functions;
@@ -10,15 +20,18 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 
+
 public class Carte extends JPanel {
     private BufferedImage image;
     private final BufferedImage carte;
+    private boolean selected = false;  
+
 
     @Getter private int ligne = Functions.alea(0,6);
     @Getter private int colonne = Functions.alea(0, 7);
     @Getter @Setter private int valeur;
 
-    public Carte() {
+
         try {
             InputStream fichierImage = getClass().getResourceAsStream("/images/cartes.jpg");
             if (fichierImage == null) {
@@ -37,6 +50,14 @@ public class Carte extends JPanel {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                selected = !selected; 
+                repaint();  
+            }
+        });
     }
 
     public Carte(int valeur) {
@@ -67,7 +88,24 @@ public class Carte extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (carte != null) {
-            g.drawImage(carte, 50, 50, null);
+            g.drawImage(carte, 0, 0, null);
         }
+
+        if (selected) {
+            g.setColor(Color.RED);
+            g.drawRect(0, 0, getWidth() - 1, getHeight() - 1); 
+        }
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public int getLigne() {
+        return ligne;
+    }
+
+    public int getColonne() {
+        return colonne;
     }
 }

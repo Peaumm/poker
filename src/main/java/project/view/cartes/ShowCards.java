@@ -8,8 +8,10 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import project.tool.Functions;
 public class ShowCards extends JPanel {
-    public int[][] tab = {
+
+    private int[][] tab = {
         {1,2,3,4,5,6,7,8},
         {9,10,11,12,13,14,15,16},
         {17,18,19,20,21,22,23,24},
@@ -18,6 +20,7 @@ public class ShowCards extends JPanel {
         {41,42,43,44,45,46,47,48},
         {49,50,51,52,0,0,0,0},
     };
+
 
     JFrame frame;
     JPanel cartePanel;
@@ -52,9 +55,10 @@ public class ShowCards extends JPanel {
 
         List<Carte> listCartes = new ArrayList<>();
 
+
         for (int i = 0; listCartes.size() < 5; i++) {
-            boolean exist = false;
-            Carte carte = new Carte();
+            int ligne = Functions.alea(0, 6);
+            int colonne = Functions.alea(0, 7);
 
             if (tab[carte.getLigne()][carte.getColonne()] == 0) {
                 exist = true;
@@ -65,8 +69,12 @@ public class ShowCards extends JPanel {
 
             if (!exist) {
                 listCartes.add(carte);
+                tab[ligne][colonne] = 0;  
             }
         }
+
+        JButton exchangeButton = new JButton("Échanger les cartes");
+        exchangeButton.addActionListener(e -> exchangeCards());
 
         for (Carte carte : listCartes) {
             System.out.println(carte.getValeur());
@@ -138,19 +146,51 @@ public class ShowCards extends JPanel {
 
         frame.add(tout);
         frame.setVisible(true);
-
     }
 
-    public static void displayBoard( int [][] tab ) {
-        for (int[] ints : tab) {
-            for (int anInt : ints) {
-                System.out.print(anInt + " ");
+    public void exchangeCards() {
+        List<Carte> cardsToExchange = new ArrayList<>();
+
+        for (Carte carte : listCartes) {
+            if (carte.isSelected()) {
+                cardsToExchange.add(carte);
+            }
+        }
+
+        if (cardsToExchange.size() > 0 && cardsToExchange.size() <= 4) {
+            for (Carte carte : cardsToExchange) {
+                listCartes.remove(carte);
+                int ligne, colonne;
+                do {
+                    ligne = Functions.alea(0, 6);
+                    colonne = Functions.alea(0, 7);
+                } while (tab[ligne][colonne] == 0);
+                Carte newCard = new Carte(ligne, colonne);
+                listCartes.add(newCard);
+                tab[ligne][colonne] = 0; 
+            }
+
+            cartePanel.removeAll();
+            for (Carte carte : listCartes) {
+                cartePanel.add(carte);
+            }
+            cartePanel.revalidate();
+            cartePanel.repaint();
+        } else {
+            JOptionPane.showMessageDialog(this, "Vous devez sélectionner entre 1 et 4 cartes à échanger.");
+        }
+    }
+
+    public static void displayBoard(int[][] tab) {
+        for (int[] row : tab) {
+            for (int card : row) {
+                System.out.print(card + " ");
             }
             System.out.println();
         }
     }
-
-    public void positionCarte(int ligne, int colonne, int[][] tab) {
+  
+      public void positionCarte(int ligne, int colonne, int[][] tab) {
         tab[ligne][colonne] = 0;
-    }
+      }
 }
