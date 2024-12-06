@@ -26,10 +26,8 @@ public class ShowCards extends JPanel {
     JPanel carteAdversPanel;
     JPanel buttonPanel;
     JPanel tout;
-    JPanel revealPanel;
     MoneyInputPanel money;
     MiseInputPanel mise;
-    JButton button;
 
     public ShowCards () {
         frame = new JFrame();
@@ -70,9 +68,6 @@ public class ShowCards extends JPanel {
             }
         }
 
-        JButton exchangeButton = new JButton("Échanger les cartes");
-        exchangeButton.addActionListener(e -> exchangeCards(listCartes));
-
         for (Carte carte : listCartes) {
             System.out.println(carte.getValeur());
             cartePanel.add(carte);
@@ -100,30 +95,11 @@ public class ShowCards extends JPanel {
             carteAdversPanel.add(carteAdverse);
         }
 
-        button = new JButton("Révéler les cartes adverses");
-        button.setPreferredSize(new Dimension(250, 60));
-        button.addActionListener(e -> {
-            tout.remove(carteAdversPanel);
-            revealPanel = new JPanel();
-            revealPanel.setPreferredSize(dimHauteur);
-            revealPanel.setLayout(new BoxLayout(revealPanel, BoxLayout.X_AXIS));
-
-            for (CarteAdverse carteAdverse : listCartesAdverse) {
-                Carte newCarte = new Carte(carteAdverse.getValeur());
-                System.out.println(carteAdverse.getLigne() + " " + carteAdverse.getColonne());
-                revealPanel.add(newCarte);
-            }
-            tout.add(revealPanel, BorderLayout.NORTH);
-            frame.revalidate();
-        });
-
         money = new MoneyInputPanel(money1 -> {
-            mise = new MiseInputPanel(money1);
+            mise = new MiseInputPanel(money1, this, listCartes, tout, carteAdversPanel, listCartesAdverse);
             mise.setPreferredSize(new Dimension(200, 400));
 
             tout.remove(buttonPanel);
-            buttonPanel.add(button, BorderLayout.WEST);
-            buttonPanel.add(exchangeButton, BorderLayout.CENTER);
             buttonPanel.add(mise, BorderLayout.EAST);
             tout.add(cartePanel, BorderLayout.SOUTH);
             tout.add(carteAdversPanel, BorderLayout.NORTH);
