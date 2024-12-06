@@ -14,6 +14,7 @@ public class MiseInputPanel extends JPanel {
   private int playerMoney = 0;
   JButton button;
   JPanel revealPanel;
+  JButton newGameButton;
 
 
   public MiseInputPanel(int initialMoney, ShowCards exchange, List<Carte> list, JPanel tout, JPanel carteAdversPanel, List<CarteAdverse> listCartesAdverse) {
@@ -52,6 +53,12 @@ public class MiseInputPanel extends JPanel {
 
     Dimension dimHauteur = new Dimension(Integer.MAX_VALUE, 300);
 
+    newGameButton = new JButton("Nouveau Jeu ?");
+    newGameButton.setPreferredSize(new Dimension(250, 60));
+    newGameButton.addActionListener(e -> {
+        boolean game = true;
+        new ShowCards(playerMoney);
+    });
 
     button = new JButton("Révéler les cartes adverses");
     button.setPreferredSize(new Dimension(250, 60));
@@ -67,6 +74,8 @@ public class MiseInputPanel extends JPanel {
           revealPanel.add(newCarte);
       }
       tout.add(revealPanel, BorderLayout.NORTH);
+      buttonsPanel.removeAll();
+      buttonsPanel.add(newGameButton);
       tout.revalidate();
     });
 
