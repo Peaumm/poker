@@ -11,7 +11,7 @@ import java.util.List;
 import project.tool.Functions;
 public class ShowCards extends JPanel {
 
-    private int[][] tab = {
+    public int[][] tab = {
         {1,2,3,4,5,6,7,8},
         {9,10,11,12,13,14,15,16},
         {17,18,19,20,21,22,23,24},
@@ -20,7 +20,6 @@ public class ShowCards extends JPanel {
         {41,42,43,44,45,46,47,48},
         {49,50,51,52,0,0,0,0},
     };
-
 
     JFrame frame;
     JPanel cartePanel;
@@ -55,10 +54,9 @@ public class ShowCards extends JPanel {
 
         List<Carte> listCartes = new ArrayList<>();
 
-
         for (int i = 0; listCartes.size() < 5; i++) {
-            int ligne = Functions.alea(0, 6);
-            int colonne = Functions.alea(0, 7);
+            boolean exist = false;
+            Carte carte = new Carte();
 
             if (tab[carte.getLigne()][carte.getColonne()] == 0) {
                 exist = true;
@@ -69,12 +67,11 @@ public class ShowCards extends JPanel {
 
             if (!exist) {
                 listCartes.add(carte);
-                tab[ligne][colonne] = 0;  
             }
         }
 
         JButton exchangeButton = new JButton("Échanger les cartes");
-        exchangeButton.addActionListener(e -> exchangeCards());
+        exchangeButton.addActionListener(e -> exchangeCards(listCartes));
 
         for (Carte carte : listCartes) {
             System.out.println(carte.getValeur());
@@ -126,6 +123,7 @@ public class ShowCards extends JPanel {
 
             tout.remove(buttonPanel);
             buttonPanel.add(button, BorderLayout.WEST);
+            buttonPanel.add(exchangeButton, BorderLayout.CENTER);
             buttonPanel.add(mise, BorderLayout.EAST);
             tout.add(cartePanel, BorderLayout.SOUTH);
             tout.add(carteAdversPanel, BorderLayout.NORTH);
@@ -148,7 +146,7 @@ public class ShowCards extends JPanel {
         frame.setVisible(true);
     }
 
-    public void exchangeCards() {
+    public void exchangeCards(List<Carte> listCartes) {
         List<Carte> cardsToExchange = new ArrayList<>();
 
         for (Carte carte : listCartes) {
@@ -160,14 +158,19 @@ public class ShowCards extends JPanel {
         if (cardsToExchange.size() > 0 && cardsToExchange.size() <= 4) {
             for (Carte carte : cardsToExchange) {
                 listCartes.remove(carte);
-                int ligne, colonne;
-                do {
-                    ligne = Functions.alea(0, 6);
-                    colonne = Functions.alea(0, 7);
-                } while (tab[ligne][colonne] == 0);
-                Carte newCard = new Carte(ligne, colonne);
-                listCartes.add(newCard);
-                tab[ligne][colonne] = 0; 
+                for (int i = 0; listCartes.size() < 5; i++) {
+                    boolean exist = false;
+                    Carte newCard = new Carte();
+                    if (tab[newCard.getLigne()][newCard.getColonne()] == 0) {
+                        exist = true;
+                    } else {
+                        newCard.setValeur(tab[newCard.getLigne()][newCard.getColonne()]);
+                        positionCarte(newCard.getLigne(), newCard.getColonne(), tab);
+                    }
+                    if (!exist) {
+                        listCartes.add(newCard);
+                    }
+                }
             }
 
             cartePanel.removeAll();
@@ -190,7 +193,7 @@ public class ShowCards extends JPanel {
         }
     }
   
-      public void positionCarte(int ligne, int colonne, int[][] tab) {
+    public void positionCarte(int ligne, int colonne, int[][] tab) {
         tab[ligne][colonne] = 0;
-      }
+    }
 }
